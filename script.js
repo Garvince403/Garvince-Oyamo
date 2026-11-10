@@ -2,6 +2,8 @@ const navToggle = document.querySelector('.nav-toggle');
 const siteNav = document.querySelector('.site-nav');
 const year = document.getElementById('year');
 const revealItems = document.querySelectorAll('.reveal');
+const filterButtons = document.querySelectorAll('.filter-button');
+const sampleCards = document.querySelectorAll('.article-card[data-category]');
 
 if (year) {
   year.textContent = new Date().getFullYear();
@@ -20,6 +22,22 @@ if (navToggle && siteNav) {
     });
   });
 }
+
+filterButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const filter = button.dataset.filter;
+
+    sampleCards.forEach((card) => {
+      card.hidden = filter !== 'all' && card.dataset.category !== filter;
+    });
+
+    filterButtons.forEach((filterButton) => {
+      const isActive = filterButton === button;
+      filterButton.classList.toggle('is-active', isActive);
+      filterButton.setAttribute('aria-pressed', String(isActive));
+    });
+  });
+});
 
 if ('IntersectionObserver' in window) {
   const observer = new IntersectionObserver(
